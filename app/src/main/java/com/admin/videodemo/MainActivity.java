@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mabeijianxi.smallvideorecord2.DeviceUtils;
+import com.mabeijianxi.smallvideorecord2.FFMpegUtils;
 import com.mabeijianxi.smallvideorecord2.JianXiCamera;
 import com.mabeijianxi.smallvideorecord2.LocalMediaCompress;
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
@@ -42,6 +43,8 @@ import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
 import com.mabeijianxi.smallvideorecord2.model.VBRMode;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -81,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_mintime;
     private Spinner spinner_need_full;
 
+    private static File recordDir;//录制文件
+    private static File compressDir;//压缩文件
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
-
-
         rg_only_compress_mode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -237,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
         BaseMediaBitrateConfig recordMode;
         BaseMediaBitrateConfig compressMode = null;
 
-
         recordMode = new AutoVBRMode();
 
         if (!spinner_record.getSelectedItem().toString().equals("none")) {
@@ -256,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 ) {
             return;
         }
-//      FFMpegUtils.captureThumbnails("/storage/emulated/0/DCIM/mabeijianxi/1496455533800/1496455533800.mp4", "/storage/emulated/0/DCIM/mabeijianxi/1496455533800/1496455533800.jpg", "1");
+        //FFMpegUtils.captureThumbnails("/storage/emulated/0/DCIM/mabeijianxi/1496455533800/1496455533800.mp4", "/storage/emulated/0/DCIM/mabeijianxi/1496455533800/1496455533800.jpg", "1");
 
         MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
                 .fullScreen(needFull)
@@ -415,20 +418,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void initSmallVideo() {
-        // 设置拍摄视频缓存路径
-        File dcim = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        if (DeviceUtils.isZte()) {
-            if (dcim.exists()) {
-                JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
-            } else {
-                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
-                        "/sdcard-ext/")
-                        + "/mabeijianxi/");
-            }
-        } else {
-            JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
-        }
+        // 设置拍摄视频缓存文件夹的路径
+//        File dcim = Environment
+//                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+//        if (DeviceUtils.isZte()) {
+//            if (dcim.exists()) {
+//                JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+//            } else {
+//                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
+//                        "/sdcard-ext/")
+//                        + "/mabeijianxi/");
+//            }
+//        } else {
+//            JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+//        }
+        recordDir = new File(getVideoRecordDir());
+        compressDir = new File(getVideoCompressDir());
+       // String videoFilePath = recordDir + "/" + getCurrentDate() + ".mp4";
+        JianXiCamera.setVideoCachePath(recordDir.getAbsolutePath());
+
         // 初始化拍摄
         JianXiCamera.initialize(false, null);
     }
@@ -456,5 +464,71 @@ public class MainActivity extends AppCompatActivity {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
+    }
+
+    /**
+     * 获取SD卡路径
+     *
+     * @return
+     */
+    public static String getSDPath() {
+        File sdDir = null;
+        // 判断sd卡是否存在
+        boolean sdCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        if (sdCardExist) {
+            sdDir = Environment.getExternalStorageDirectory();//获取根目录
+            return sdDir.toString();
+        }
+        return null;
+    }
+
+    /**
+     * 获取录制视频的路径
+     * @return
+     */
+    public static String getVideoRecordDir(){
+        String dirPath = getSDPath();
+        dirPath += "/" + "videorecordcompress";
+        File file = new File(dirPath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        dirPath +="/"+"videorecord";
+        file = new File(dirPath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        return dirPath;
+    }
+
+    /**
+     * 获取压缩视频的路径
+     * @return
+     */
+    public static String getVideoCompressDir(){
+        String dirPath = getSDPath();
+        dirPath += "/" + "videorecordcompress";
+        File file = new File(dirPath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        dirPath +="/"+"videocompress";
+        file = new File(dirPath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        return dirPath;
+    }
+
+    /**
+     * 获取系统时间- 视频保存的时间
+     *
+     * @return
+     */
+    public static String getCurrentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String date = formatter.format(curDate);
+        return date;
     }
 }
