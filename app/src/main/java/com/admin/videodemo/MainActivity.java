@@ -219,11 +219,14 @@ public class MainActivity extends AppCompatActivity {
      */
     public void choose(View v) {
 
-        Intent it = new Intent(Intent.ACTION_GET_CONTENT,
-                android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+//        Intent it = new Intent(Intent.ACTION_GET_CONTENT,
+//                android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+//
+//        it.setDataAndType(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "video/*");
+//        startActivityForResult(it, CHOOSE_CODE);
 
-        it.setDataAndType(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "video/*");
-        startActivityForResult(it, CHOOSE_CODE);
+        String videoFilePath = recordDir.getAbsolutePath() + "/videorecord1519898039101/1519898039101.mp4";
+        compressVideo(videoFilePath,"");
 
     }
 
@@ -388,6 +391,91 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 压缩指定视频文件
+     * @param videoFilePath
+     */
+    private void compressVideo(String videoFilePath,String compressFilePath){
+
+        File file = new File(videoFilePath);
+        if(!file.exists()){
+            return;
+        }
+        BaseMediaBitrateConfig compressMode = null;
+
+        int compressModeCheckedId = rg_only_compress_mode.getCheckedRadioButtonId();
+
+        if (compressModeCheckedId == R.id.rb_cbr) {
+            String bitrate = et_only_compress_bitrate.getText().toString();
+            if (checkStrEmpty(bitrate, "请输入压缩额定码率")) {
+                return;
+            }
+            compressMode = new CBRMode(166, Integer.valueOf(bitrate));
+        } else if (compressModeCheckedId == R.id.rb_auto) {
+            String crfSize = et_only_compress_crfSize.getText().toString();
+            if (TextUtils.isEmpty(crfSize)) {
+                compressMode = new AutoVBRMode();
+            } else {
+                compressMode = new AutoVBRMode(Integer.valueOf(crfSize));
+            }
+        } else if (compressModeCheckedId == R.id.rb_vbr) {
+            String maxBitrate = et_only_compress_maxbitrate.getText().toString();
+            String bitrate = et_only_compress_bitrate.getText().toString();
+
+            if (checkStrEmpty(maxBitrate, "请输入压缩最大码率") || checkStrEmpty(bitrate, "请输入压缩额定码率")) {
+                return;
+            }
+            compressMode = new VBRMode(Integer.valueOf(maxBitrate), Integer.valueOf(bitrate));
+        } else {
+            compressMode = new AutoVBRMode();
+        }
+
+        if (!spinner_only_compress.getSelectedItem().toString().equals("none")) {
+            compressMode.setVelocity(spinner_only_compress.getSelectedItem().toString());
+        }
+
+        String sRate = et_only_framerate.getText().toString();
+        String scale = et_only_scale.getText().toString();
+        int iRate = 0;
+        float fScale = 0;
+        if (!TextUtils.isEmpty(sRate)) {
+            iRate = Integer.valueOf(sRate);
+        }
+        if (!TextUtils.isEmpty(scale)) {
+            fScale = Float.valueOf(scale);
+        }
+        LocalMediaConfig.Buidler buidler = new LocalMediaConfig.Buidler();
+        final LocalMediaConfig config = buidler
+                .setVideoPath(videoFilePath)
+                .captureThumbnailsTime(1)
+                .doH264Compress(compressMode)
+                .setFramerate(iRate)
+                .setScale(fScale)
+                .build();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgress("", "压缩中...", -1);
+                    }
+                });
+                OnlyCompressOverBean onlyCompressOverBean = new LocalMediaCompress(config).startCompress();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideProgress();
+                    }
+                });
+                Intent intent = new Intent(MainActivity.this, ActSendVideo.class);
+                intent.putExtra(MediaRecorderActivity.VIDEO_URI, onlyCompressOverBean.getVideoPath());
+                intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, onlyCompressOverBean.getPicPath());
+                startActivity(intent);
+            }
+        }).start();
     }
 
     private boolean checkStrEmpty(String str, String display) {
