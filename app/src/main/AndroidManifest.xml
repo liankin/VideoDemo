@@ -20,14 +20,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="stateHidden">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ActMediaRecorder"/>
+        <activity android:name=".ActFFMpegVideoRecordCompress"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ActFFMpegRecordVideo"
+            android:windowSoftInputMode="stateHidden"/>
+
+
         <activity android:name=".ActSendVideo"/>
         <activity android:name=".ActVideoPlayer"/>
         <activity android:name="com.mabeijianxi.smallvideorecord2.MediaRecorderActivity"

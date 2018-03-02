@@ -4,12 +4,9 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -28,8 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mabeijianxi.smallvideorecord2.DeviceUtils;
-import com.mabeijianxi.smallvideorecord2.FFMpegUtils;
 import com.mabeijianxi.smallvideorecord2.JianXiCamera;
 import com.mabeijianxi.smallvideorecord2.LocalMediaCompress;
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
@@ -43,11 +38,9 @@ import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
 import com.mabeijianxi.smallvideorecord2.model.VBRMode;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ActFFMpegVideoRecordCompress extends AppCompatActivity {
 
     private final int PERMISSION_REQUEST_CODE = 0x001;
     private ScrollView sv;
@@ -90,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_act_ffmpeg_video_record_compress);
         initSmallVideo();
         initView();
         initEvent();
@@ -378,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
 //                                        hideProgress();
 //                                    }
 //                                });
-//                                Intent intent = new Intent(MainActivity.this, ActSendVideo.class);
+//                                Intent intent = new Intent(ActFFMpegVideoRecordCompress.this, ActSendVideo.class);
 //                                intent.putExtra(MediaRecorderActivity.VIDEO_URI, onlyCompressOverBean.getVideoPath());
 //                                intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, onlyCompressOverBean.getPicPath());
 //                                startActivity(intent);
@@ -471,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
                         hideProgress();
                     }
                 });
-                Intent intent = new Intent(MainActivity.this, ActSendVideo.class);
+                Intent intent = new Intent(ActFFMpegVideoRecordCompress.this, ActSendVideo.class);
                 intent.putExtra(MediaRecorderActivity.VIDEO_URI, onlyCompressOverBean.getVideoPath());
                 intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, onlyCompressOverBean.getPicPath());
                 startActivity(intent);
