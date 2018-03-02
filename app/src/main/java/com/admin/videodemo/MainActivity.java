@@ -608,15 +608,16 @@ public class MainActivity extends AppCompatActivity {
         return dirPath;
     }
 
-    /**
-     * 获取系统时间- 视频保存的时间
-     *
-     * @return
-     */
-    public static String getCurrentDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        Date curDate = new Date(System.currentTimeMillis());
-        String date = formatter.format(curDate);
-        return date;
-    }
+//    /**
+//     * 获取系统时间- 视频保存的时间
+//     *
+//     * @return
+//     */
+//    public static String getCurrentDate() {
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//        Date curDate = new Date(System.currentTimeMillis());
+//        String date = formatter.format(curDate);
+//        return date;
+//    }
+
 }

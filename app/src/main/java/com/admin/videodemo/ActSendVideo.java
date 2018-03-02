@@ -93,7 +93,7 @@ public class ActSendVideo extends AppCompatActivity implements View.OnClickListe
         if (dialog == null) {
             dialog = new AlertDialog.Builder(this)
                     .setTitle(R.string.hint)
-                    .setMessage(R.string.record_camera_exit_dialog_message)
+                    .setMessage(R.string.record_camera_send_dialog_message)
                     .setNegativeButton(
                             R.string.record_camera_cancel_dialog_yes,
                             new DialogInterface.OnClickListener() {
