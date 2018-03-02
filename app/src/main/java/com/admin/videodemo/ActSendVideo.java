@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
 
@@ -73,7 +74,7 @@ public class ActSendVideo extends AppCompatActivity implements View.OnClickListe
                 hesitate();
                 break;
             case R.id.tv_send:
-
+                Toast.makeText(this, "发送功能正在建设中。。。", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.iv_video_screenshot:
                 startActivity(new Intent(this, ActVideoPlayer.class).putExtra(

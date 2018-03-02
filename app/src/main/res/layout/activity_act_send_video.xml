@@ -31,7 +31,7 @@
             android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:text="保存"
+            android:text="发送"
             android:textColor="@color/camera_progress_three"
             android:textSize="13sp" />
     </RelativeLayout>
@@ -53,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top"
+            android:editable="false"
             android:hint="视频保存路径"
             android:minHeight="66dp"
             android:paddingLeft="15dp"

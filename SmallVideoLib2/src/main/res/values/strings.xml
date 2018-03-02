@@ -21,7 +21,7 @@
     <string name="record_camera_check_available_faild">手机满了！至少需要200M存储空间才能继续拍摄！</string>
     <string name="record_camera_open_audio_faild">无法打开录音设备！</string>
     <string name="record_camera_save_faild">视频信息保存失败！</string>
-    <string name="record_camera_exit_dialog_message">是否放弃这段视频？</string>
+    <string name="record_camera_exit_dialog_message">是否放弃发送这段视频？</string>
     <string name="record_camera_import">导入</string>
     <string name="record_camera_import_image">照片</string>
     <string name="record_camera_import_image_choose">从本地照片选择</string>

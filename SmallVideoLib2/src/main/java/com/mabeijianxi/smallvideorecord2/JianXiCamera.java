@@ -19,8 +19,11 @@ public class JianXiCamera {
     private static String mAppVersionName;
     /** 应用版本号 */
     private static int mAppVersionCode;
-    /** 视频缓存路径 */
+    /** 视频缓存(录制)路径 */
     private static String mVideoCachePath;
+    /** 视频压缩路径 */
+    private static String mVideoCompressPath;
+
 
     /** 执行FFMPEG命令保存路径 */
     public final static String FFMPEG_LOG_FILENAME_TEMP = "jx_ffmpeg.log";
@@ -54,8 +57,18 @@ public class JianXiCamera {
         if (!file.exists()) {
             file.mkdirs();
         }
-
         mVideoCachePath = path;
-
+    }
+    /** 获取视频压缩文件夹 */
+    public static String getVideoCompressPath() {
+        return mVideoCompressPath;
+    }
+    /** 设置视频压缩路径 */
+    public static void setVideoCompressPath(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        mVideoCompressPath = path;
     }
 }

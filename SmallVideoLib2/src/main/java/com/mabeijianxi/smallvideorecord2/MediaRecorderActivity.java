@@ -26,6 +26,8 @@ import com.mabeijianxi.smallvideorecord2.model.MediaObject;
 import com.mabeijianxi.smallvideorecord2.model.MediaRecorderConfig;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.mabeijianxi.smallvideorecord2.R.id.bottom_layout;
 
@@ -256,11 +258,20 @@ public class MediaRecorderActivity extends Activity implements
         if (!FileUtils.checkFile(f)) {
             f.mkdirs();
         }
-        String key = String.valueOf(System.currentTimeMillis());
+        //录制的视频名字、路径
+        String key = getCurrentDate(); //String.valueOf(System.currentTimeMillis());
         mMediaObject = mMediaRecorder.setOutputDirectory(key,
-                JianXiCamera.getVideoCachePath() + key);
+                JianXiCamera.getVideoCachePath() + "/" + key);
         mMediaRecorder.setSurfaceHolder(mSurfaceView.getHolder());
         mMediaRecorder.prepare();
+    }
+
+    /**获取系统时间- 视频保存的时间*/
+    public static String getCurrentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String date = formatter.format(curDate);
+        return date;
     }
 
 

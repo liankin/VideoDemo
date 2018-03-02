@@ -401,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
 
         File file = new File(videoFilePath);
         if(!file.exists()){
+            Toast.makeText(this, "视频文件不存在，无法执行压缩操作", Toast.LENGTH_SHORT).show();
             return;
         }
         BaseMediaBitrateConfig compressMode = null;
@@ -522,9 +523,8 @@ public class MainActivity extends AppCompatActivity {
 //        }
         recordDir = new File(getVideoRecordDir());
         compressDir = new File(getVideoCompressDir());
-       // String videoFilePath = recordDir + "/" + getCurrentDate() + ".mp4";
         JianXiCamera.setVideoCachePath(recordDir.getAbsolutePath());
-
+        JianXiCamera.setVideoCompressPath(compressDir.getAbsolutePath());
         // 初始化拍摄
         JianXiCamera.initialize(false, null);
     }

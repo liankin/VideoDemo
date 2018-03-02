@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -149,9 +151,10 @@ public class LocalMediaCompress extends MediaRecorderBase {
         if (!FileUtils.checkFile(f)) {
             f.mkdirs();
         }
-        String key = String.valueOf(System.currentTimeMillis());
+        //压缩后的视频文件名字、路径
+        String key = getCurrentDate();//String.valueOf(System.currentTimeMillis());
         mMediaObject = setOutputDirectory(key,
-                JianXiCamera.getVideoCachePath() + key);
+                JianXiCamera.getVideoCompressPath() + "/" + key);
 
         mMediaObject.setOutputTempVideoPath(mNeedCompressVideo);
 
@@ -172,5 +175,16 @@ public class LocalMediaCompress extends MediaRecorderBase {
         return mOnlyCompressOverBean;
     }
 
+    /**
+     * 获取系统时间- 视频保存的时间
+     *
+     * @return
+     */
+    public static String getCurrentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String date = formatter.format(curDate);
+        return date;
+    }
 
 }
