@@ -1,9 +1,5 @@
 package com.admin.videodemo;
 
-/**
- * Created by admin on 2018/3/1.
- */
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.media.MediaPlayer;
@@ -21,9 +17,7 @@ import com.mabeijianxi.smallvideorecord2.StringUtils;
 import com.mabeijianxi.smallvideorecord2.SurfaceVideoView;
 
 /**
- * 通用单独播放界面
- *
- * @author tangjun
+ * 通用单独的视频播放界面
  */
 public class ActVideoPlayer extends AppCompatActivity implements
         SurfaceVideoView.OnPlayStateListener, MediaPlayer.OnErrorListener,

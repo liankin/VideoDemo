@@ -3,15 +3,10 @@ package com.admin.videodemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Build;
+
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,10 +25,11 @@ import com.mabeijianxi.smallvideorecord2.model.MediaRecorderConfig;
 import java.io.File;
 import java.util.List;
 
-
+/**
+ * 使用FFMpeg实现视频录制
+ */
 public class ActFFMpegRecordVideo extends AppCompatActivity{
 
-//    private final int PERMISSION_REQUEST_CODE = 0x001;
     private Button bt_start;
     private TextView tv_size;
     private EditText et_width;
@@ -43,12 +39,7 @@ public class ActFFMpegRecordVideo extends AppCompatActivity{
     private EditText et_maxframerate;
     private ProgressDialog mProgressDialog;
     private EditText et_bitrate;
-//    private static final String[] permissionManifest = {
-//            Manifest.permission.CAMERA,
-//            Manifest.permission.RECORD_AUDIO,
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//    };
+
     private EditText et_mintime;
     private Spinner spinner_need_full;
     private static File recordDir;//录制文件

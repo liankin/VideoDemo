@@ -40,6 +40,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 使用MediaRecorder实现视频录制与播放
+ */
 public class ActMediaRecorder extends AppCompatActivity implements SurfaceHolder.Callback {
 
     @BindView(R.id.surfaceview)
@@ -399,6 +402,9 @@ public class ActMediaRecorder extends AppCompatActivity implements SurfaceHolder
      * 压缩视频
      */
     private void compressVideo(final String filePath, final String savePath) {
+        if(isPlaying || isRecording){
+            Toast.makeText(ActMediaRecorder.this,"正在录制、播放视频，请结束操作后再压缩",Toast.LENGTH_SHORT).show();
+        }
         Toast.makeText(ActMediaRecorder.this,"功能建设中。。。",Toast.LENGTH_SHORT).show();
     }
 

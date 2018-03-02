@@ -1,30 +1,20 @@
 package com.admin.videodemo;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
-import android.os.Build;
+
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,13 +27,14 @@ import com.mabeijianxi.smallvideorecord2.model.AutoVBRMode;
 import com.mabeijianxi.smallvideorecord2.model.BaseMediaBitrateConfig;
 import com.mabeijianxi.smallvideorecord2.model.CBRMode;
 import com.mabeijianxi.smallvideorecord2.model.LocalMediaConfig;
-import com.mabeijianxi.smallvideorecord2.model.MediaRecorderConfig;
 import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
 import com.mabeijianxi.smallvideorecord2.model.VBRMode;
 
 import java.io.File;
-import java.util.List;
 
+/**
+ * 使用FFMpeg实现视频压缩
+ */
 public class ActFFMpegCompressVideo extends AppCompatActivity{
 
     private final int PERMISSION_REQUEST_CODE = 0x001;

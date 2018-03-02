@@ -1,15 +1,10 @@
 package com.admin.videodemo;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Build;
+
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -40,9 +35,11 @@ import com.mabeijianxi.smallvideorecord2.model.VBRMode;
 import java.io.File;
 import java.util.List;
 
+/**
+ * 使用FFMpeg实现视频录制与压缩
+ */
 public class ActFFMpegVideoRecordCompress extends AppCompatActivity {
 
-    private final int PERMISSION_REQUEST_CODE = 0x001;
     private ScrollView sv;
     private Button bt_start;
     private TextView tv_size;
@@ -67,12 +64,7 @@ public class ActFFMpegVideoRecordCompress extends AppCompatActivity {
     private Spinner spinner_only_compress;
     private EditText et_only_framerate;
     private EditText et_bitrate;
-    private static final String[] permissionManifest = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+
     private EditText et_only_scale;
     private EditText et_mintime;
     private Spinner spinner_need_full;
@@ -87,7 +79,7 @@ public class ActFFMpegVideoRecordCompress extends AppCompatActivity {
         initSmallVideo();
         initView();
         initEvent();
-        permissionCheck();
+        setSupportCameraSize();
     }
 
     private void setSupportCameraSize() {
@@ -271,121 +263,6 @@ public class ActFFMpegVideoRecordCompress extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    if (Manifest.permission.CAMERA.equals(permissions[i])) {
-                        setSupportCameraSize();
-                    } else if (Manifest.permission.RECORD_AUDIO.equals(permissions[i])) {
-
-                    }
-                }
-            }
-        }
-    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == CHOOSE_CODE) {
-//            //
-//            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-//                Uri uri = data.getData();
-//                String[] proj = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.MIME_TYPE};
-//
-//                Cursor cursor = getContentResolver().query(uri, proj, null,
-//                        null, null);
-//                if (cursor != null && cursor.moveToFirst()) {
-//                    int _data_num = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-//                    int mime_type_num = cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE);
-//
-//                    String _data = cursor.getString(_data_num);
-//                    String mime_type = cursor.getString(mime_type_num);
-//                    if (!TextUtils.isEmpty(mime_type) && mime_type.contains("video") && !TextUtils.isEmpty(_data)) {
-//                        BaseMediaBitrateConfig compressMode = null;
-//
-//                        int compressModeCheckedId = rg_only_compress_mode.getCheckedRadioButtonId();
-//
-//                        if (compressModeCheckedId == R.id.rb_cbr) {
-//                            String bitrate = et_only_compress_bitrate.getText().toString();
-//                            if (checkStrEmpty(bitrate, "请输入压缩额定码率")) {
-//                                return;
-//                            }
-//                            compressMode = new CBRMode(166, Integer.valueOf(bitrate));
-//                        } else if (compressModeCheckedId == R.id.rb_auto) {
-//                            String crfSize = et_only_compress_crfSize.getText().toString();
-//                            if (TextUtils.isEmpty(crfSize)) {
-//                                compressMode = new AutoVBRMode();
-//                            } else {
-//                                compressMode = new AutoVBRMode(Integer.valueOf(crfSize));
-//                            }
-//                        } else if (compressModeCheckedId == R.id.rb_vbr) {
-//                            String maxBitrate = et_only_compress_maxbitrate.getText().toString();
-//                            String bitrate = et_only_compress_bitrate.getText().toString();
-//
-//                            if (checkStrEmpty(maxBitrate, "请输入压缩最大码率") || checkStrEmpty(bitrate, "请输入压缩额定码率")) {
-//                                return;
-//                            }
-//                            compressMode = new VBRMode(Integer.valueOf(maxBitrate), Integer.valueOf(bitrate));
-//                        } else {
-//                            compressMode = new AutoVBRMode();
-//                        }
-//
-//                        if (!spinner_only_compress.getSelectedItem().toString().equals("none")) {
-//                            compressMode.setVelocity(spinner_only_compress.getSelectedItem().toString());
-//                        }
-//
-//                        String sRate = et_only_framerate.getText().toString();
-//                        String scale = et_only_scale.getText().toString();
-//                        int iRate = 0;
-//                        float fScale=0;
-//                        if (!TextUtils.isEmpty(sRate)) {
-//                            iRate = Integer.valueOf(sRate);
-//                        }
-//                        if (!TextUtils.isEmpty(scale)) {
-//                            fScale = Float.valueOf(scale);
-//                        }
-//                        LocalMediaConfig.Buidler buidler = new LocalMediaConfig.Buidler();
-//                        final LocalMediaConfig config = buidler
-//                                .setVideoPath(_data)
-//                                .captureThumbnailsTime(1)
-//                                .doH264Compress(compressMode)
-//                                .setFramerate(iRate)
-//                                .setScale(fScale)
-//                                .build();
-//                        new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        showProgress("", "压缩中...", -1);
-//                                    }
-//                                });
-//                                OnlyCompressOverBean onlyCompressOverBean = new LocalMediaCompress(config).startCompress();
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        hideProgress();
-//                                    }
-//                                });
-//                                Intent intent = new Intent(ActFFMpegVideoRecordCompress.this, ActSendVideo.class);
-//                                intent.putExtra(MediaRecorderActivity.VIDEO_URI, onlyCompressOverBean.getVideoPath());
-//                                intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, onlyCompressOverBean.getPicPath());
-//                                startActivity(intent);
-//                            }
-//                        }).start();
-//                    } else {
-//                        Toast.makeText(this, "选择的不是视频或者地址错误,也可能是这种方式定制神机取不到！", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-
     /**
      * 压缩指定视频文件
      * @param videoFilePath
@@ -480,40 +357,7 @@ public class ActFFMpegVideoRecordCompress extends AppCompatActivity {
         return false;
     }
 
-    private void permissionCheck() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            boolean permissionState = true;
-            for (String permission : permissionManifest) {
-                if (ContextCompat.checkSelfPermission(this, permission)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    permissionState = false;
-                }
-            }
-            if (!permissionState) {
-                ActivityCompat.requestPermissions(this, permissionManifest, PERMISSION_REQUEST_CODE);
-            } else {
-                setSupportCameraSize();
-            }
-        } else {
-            setSupportCameraSize();
-        }
-    }
-
     public static void initSmallVideo() {
-        // 设置拍摄视频缓存文件夹的路径
-//        File dcim = Environment
-//                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-//        if (DeviceUtils.isZte()) {
-//            if (dcim.exists()) {
-//                JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
-//            } else {
-//                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
-//                        "/sdcard-ext/")
-//                        + "/mabeijianxi/");
-//            }
-//        } else {
-//            JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
-//        }
         recordDir = new File(getVideoRecordDir());
         compressDir = new File(getVideoCompressDir());
         JianXiCamera.setVideoCachePath(recordDir.getAbsolutePath());

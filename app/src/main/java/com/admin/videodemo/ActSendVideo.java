@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
 
 /**
- * Created by admin on 2018/3/1.
+ * 预览视频路径、封面
  */
 
 public class ActSendVideo extends AppCompatActivity implements View.OnClickListener {
