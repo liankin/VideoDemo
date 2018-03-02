@@ -4,22 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e2c4c4" >
-
-    <TextView
-        android:id="@+id/txt_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_margin="10dp"
-        android:layout_alignParentRight="true"
-        android:textColor="#45C01A"
-        android:visibility="gone"
-        android:text="发布"  />
     
     <com.mabeijianxi.smallvideorecord2.SurfaceVideoView
         android:id="@+id/videoview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:fitsSystemWindows="true"
         android:saveEnabled="true" />
@@ -40,4 +29,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <TextView
+        android:id="@+id/txt_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        android:textColor="#45C01A"
+        android:visibility="gone"
+        android:text="发布"  />
 </RelativeLayout>
