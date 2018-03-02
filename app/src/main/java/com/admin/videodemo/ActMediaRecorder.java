@@ -94,10 +94,10 @@ public class ActMediaRecorder extends AppCompatActivity implements SurfaceHolder
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
-//        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
         setContentView(R.layout.activity_act_media_recorder);
         ButterKnife.bind(this);
@@ -399,8 +399,7 @@ public class ActMediaRecorder extends AppCompatActivity implements SurfaceHolder
      * 压缩视频
      */
     private void compressVideo(final String filePath, final String savePath) {
-        final String imagePath = recordDir + "/image.png";
-
+        Toast.makeText(ActMediaRecorder.this,"功能建设中。。。",Toast.LENGTH_SHORT).show();
     }
 
     /**

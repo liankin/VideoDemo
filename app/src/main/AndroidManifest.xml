@@ -32,8 +32,8 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ActFFMpegRecordVideo"
             android:windowSoftInputMode="stateHidden"/>
-
-
+        <activity android:name=".ActFFMpegCompressVideo"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ActSendVideo"/>
         <activity android:name=".ActVideoPlayer"/>
         <activity android:name="com.mabeijianxi.smallvideorecord2.MediaRecorderActivity"
